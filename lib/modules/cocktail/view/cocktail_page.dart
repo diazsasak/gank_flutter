@@ -31,7 +31,9 @@ class CocktailPage extends StatelessWidget {
               child: Container(
                 color: Theme.of(context).backgroundColor,
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor)),
                 ),
               ),
             );

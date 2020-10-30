@@ -27,6 +27,7 @@ class _AppState extends State<App> {
         create: (_) => AuthenticationBloc(
             authenticationRepository: authenticationRepository),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: theme,
           navigatorKey: _navigatorKey,
           builder: (context, child) {
