@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 final mainColor = const Color(0xFF1D2129);
 
 final theme = ThemeData(
-  appBarTheme: AppBarTheme(color: mainColor, elevation: 0),
+  appBarTheme: AppBarTheme(
+      color: mainColor,
+      elevation: 0,
+      centerTitle: true,
+      textTheme: TextTheme(
+          headline6: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ))),
   cardColor: const Color(0xFF373B5C),
   primaryColorDark: mainColor,
   primaryColorLight: mainColor,

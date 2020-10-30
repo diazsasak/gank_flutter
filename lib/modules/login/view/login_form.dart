@@ -1,5 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gank_flutter/modules/login/cubit/login_cubit.dart';
 import 'package:gank_flutter/modules/login/cubit/login_state.dart';
@@ -39,7 +39,6 @@ class LoginForm extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return RaisedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(

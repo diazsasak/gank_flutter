@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_echarts/flutter_echarts.dart';
 import 'package:gank_flutter/modules/account/view/echart.dart';
 
 class ProfileTab extends StatelessWidget {

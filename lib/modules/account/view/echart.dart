@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_echarts/flutter_echarts.dart';
 
-class SkillChart extends StatelessWidget {
+class SkillChart extends StatefulWidget {
+  @override
+  _SkillChartState createState() => _SkillChartState();
+}
+
+class _SkillChartState extends State<SkillChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(0),
+      margin: EdgeInsets.all(0),
       child: Echarts(
         option: '''
     {

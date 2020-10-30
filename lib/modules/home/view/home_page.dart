@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gank_flutter/modules/account/view/account_page.dart';
-import 'package:gank_flutter/modules/chat/view/chat_page.dart';
+import 'package:gank_flutter/modules/chat_list/view/chat_list_page.dart';
 import 'package:gank_flutter/modules/cocktail/view/cocktail_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final pages = [
     CocktailPage(),
-    ChatPage(),
+    ChatListPage(),
     AccountPage(),
   ];
   int currentIndex = 0;
