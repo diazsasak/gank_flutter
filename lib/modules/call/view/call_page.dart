@@ -87,58 +87,69 @@ class _CallPageState extends State<CallPage> {
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RawMaterialButton(
-            onPressed: () => context.bloc<CallBloc>().add(ToggleMute()),
-            child: Icon(
-              state.muted ? Icons.mic_off : Icons.mic,
-              color: state.muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: state.muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RawMaterialButton(
+                onPressed: () => context.bloc<CallBloc>().add(SwitchCamera()),
+                child: Icon(
+                  Icons.switch_camera,
+                  color: Colors.blueAccent,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: Colors.white,
+                padding: const EdgeInsets.all(3.0),
+              ),
+              RawMaterialButton(
+                onPressed: () => context.bloc<CallBloc>().add(ToggleVideo()),
+                child: Icon(
+                  !state.videoOff
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
+                  color: !state.videoOff ? Colors.blueAccent : Colors.white,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: !state.videoOff ? Colors.white : Colors.blueAccent,
+                padding: const EdgeInsets.all(3.0),
+              ),
+            ],
           ),
-          RawMaterialButton(
-            onPressed: () => context.bloc<CallBloc>().add(EndCall()),
-            child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: () => context.bloc<CallBloc>().add(SwitchCamera()),
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          ),
-          RawMaterialButton(
-            onPressed: () => context.bloc<CallBloc>().add(ToggleVideo()),
-            child: Icon(
-              !state.videoOff
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-              color: !state.videoOff ? Colors.blueAccent : Colors.white,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: !state.videoOff ? Colors.white : Colors.blueAccent,
-            padding: const EdgeInsets.all(12.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RawMaterialButton(
+                onPressed: () => context.bloc<CallBloc>().add(ToggleMute()),
+                child: Icon(
+                  state.muted ? Icons.mic_off : Icons.mic,
+                  color: state.muted ? Colors.white : Colors.blueAccent,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: state.muted ? Colors.blueAccent : Colors.white,
+                padding: const EdgeInsets.all(3.0),
+              ),
+              RawMaterialButton(
+                onPressed: () => context.bloc<CallBloc>().add(EndCall()),
+                child: Icon(
+                  Icons.call_end,
+                  color: Colors.white,
+                  size: 35.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: Colors.redAccent,
+                padding: const EdgeInsets.all(3.0),
+              ),
+            ],
           ),
         ],
       ),

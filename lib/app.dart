@@ -46,17 +46,18 @@ class _AppState extends State<App> {
           navigatorKey: _navigatorKey,
           home: BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
+              print('yes');
               switch (state.status) {
                 case AuthenticationStatus.authenticated:
                   _navigator.pushAndRemoveUntil<void>(
                     HomePage.route(),
-                        (route) => false,
+                    (route) => false,
                   );
                   break;
                 case AuthenticationStatus.unauthenticated:
                   _navigator.pushAndRemoveUntil<void>(
                     LoginPage.route(),
-                        (route) => false,
+                    (route) => false,
                   );
                   break;
                 default:

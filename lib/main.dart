@@ -15,7 +15,8 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: false,
+      // enabled: !kReleaseMode,
       usePreferences: true,
       areSettingsEnabled: true,
       style: DevicePreviewStyle(
