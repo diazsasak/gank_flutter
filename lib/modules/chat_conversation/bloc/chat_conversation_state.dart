@@ -30,3 +30,10 @@ class MessageLoadSuccess extends ChatConversationState {
 // @override
 // List<Object> get props => [messages];
 }
+
+class CallStarted extends ChatConversationState {
+  final String channel;
+  final ClientRole role;
+
+  CallStarted(this.channel, this.role);
+}

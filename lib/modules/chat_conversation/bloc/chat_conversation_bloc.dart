@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -39,8 +40,17 @@ class ChatConversationBloc
     } else if (event is ChatConversationStarted) {
       yield MessageLoadSuccess(messages);
     } else if (event is ChatMessageReceive) {
-      messages.add(event.message);
-      yield (state as MessageLoadSuccess).copyWith(messages: messages);
+      if (event.message.message.split('-')[0] == 'call') {
+        yield CallStarted(event.message.message, ClientRole.Audience);
+      } else {
+        messages.add(event.message);
+        yield (state as MessageLoadSuccess).copyWith(messages: messages);
+      }
+    } else if (event is DoCall) {
+      String channel = 'call-$userId-$partnerId';
+      AgoraRtmMessage arm = AgoraRtmMessage.fromText(channel);
+      client.sendMessageToPeer(partnerId, arm);
+      yield CallStarted(channel, ClientRole.Broadcaster);
     }
   }
 

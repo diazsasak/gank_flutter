@@ -1,6 +1,8 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gank_flutter/blocs/authentication/authentication_bloc.dart';
+import 'package:gank_flutter/modules/call/view/call_page.dart';
 import 'package:gank_flutter/modules/chat_conversation/bloc/chat_conversation_bloc.dart';
 import 'package:gank_flutter/modules/chat_conversation/view/chat_message_list_item.dart';
 import 'package:gank_flutter/modules/chat_list/bloc/chat_list_bloc.dart';
@@ -43,6 +45,12 @@ class _ChatConversationPageState extends State<ChatConversationPage> {
                 content: Text('Failed to load messages.'),
               ),
             );
+          } else if (state is CallStarted) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => CallPage(
+                        channelName: state.channel, role: state.role)));
           }
         },
         child: BlocBuilder<ChatConversationBloc, ChatConversationState>(
@@ -55,7 +63,8 @@ class _ChatConversationPageState extends State<ChatConversationPage> {
                   actions: [
                     IconButton(
                       icon: Icon((Icons.video_call_outlined)),
-                      onPressed: () {},
+                      onPressed: () =>
+                          context.bloc<ChatConversationBloc>().add(DoCall()),
                     )
                   ],
                 ),

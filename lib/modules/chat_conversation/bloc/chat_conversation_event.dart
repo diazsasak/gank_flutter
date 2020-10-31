@@ -26,3 +26,8 @@ class ChatMessageReceive extends ChatConversationEvent {
   @override
   List<Object> get props => [message];
 }
+
+class DoCall extends ChatConversationEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gank_flutter/utils/settings.dart';
 import 'package:meta/meta.dart';
 
 part 'chat_list_event.dart';
@@ -70,7 +71,7 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   Future<void> createClient() async {
     print('create client');
     client =
-        await AgoraRtmClient.createInstance('10be0f706220404296699b9458e87b6b');
+        await AgoraRtmClient.createInstance(APP_ID);
     client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
       print("Peer msg: " + peerId + ", msg: " + message.text);
     };
