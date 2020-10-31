@@ -8,9 +8,9 @@ class ChatListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          ChatListBloc(context.bloc<AuthenticationBloc>().state.user.name)
-            ..add(ChatMemberStarted()),
+      create: (context) => ChatListBloc(
+        context.bloc<AuthenticationBloc>().state.user.email,
+      )..add(ChatMemberStarted()),
       child: BlocListener<ChatListBloc, ChatListState>(
         listener: (context, state) {
           if (state is ChatMemberLoadFailure) {
@@ -22,7 +22,8 @@ class ChatListPage extends StatelessWidget {
             );
           }
         },
-        child: BlocBuilder<ChatListBloc, ChatListState>(builder: (context, state) {
+        child:
+            BlocBuilder<ChatListBloc, ChatListState>(builder: (context, state) {
           if (state is ChatInitial) {
             return SafeArea(
               child: Container(
@@ -43,12 +44,16 @@ class ChatListPage extends StatelessWidget {
                 body: Container(
                   padding: EdgeInsets.only(bottom: 8),
                   color: Theme.of(context).backgroundColor,
-                  child: ListView.builder(
-                      padding: EdgeInsets.all(8.0),
-                      itemCount: state.members.length,
-                      itemBuilder: (context, index) {
-                        return ChatMemberListItem(state.members[index]);
-                      }),
+                  child: state.members.length == 0
+                      ? Center(
+                          child: Text('No one online.'),
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsets.all(8.0),
+                          itemCount: state.members.length,
+                          itemBuilder: (context, index) {
+                            return ChatMemberListItem(state.members[index]);
+                          }),
                 ),
               ),
             );

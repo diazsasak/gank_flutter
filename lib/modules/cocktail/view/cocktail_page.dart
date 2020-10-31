@@ -4,6 +4,7 @@ import 'package:gank_flutter/modules/cocktail/bloc/cocktail_bloc.dart';
 import 'package:gank_flutter/modules/cocktail/view/cocktail_list_item.dart';
 import 'package:gank_flutter/providers/cocktail_provider.dart';
 import 'package:gank_flutter/repositories/cocktail_repository.dart';
+import 'package:gank_flutter/widgets/custom_loading.dart';
 
 class CocktailPage extends StatelessWidget {
   @override
@@ -27,16 +28,7 @@ class CocktailPage extends StatelessWidget {
         child:
             BlocBuilder<CocktailBloc, CocktailState>(builder: (context, state) {
           if (state is CocktailInitial) {
-            return SafeArea(
-              child: Container(
-                color: Theme.of(context).backgroundColor,
-                child: Center(
-                  child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor)),
-                ),
-              ),
-            );
+            return CustomLoading();
           } else if (state is CocktailLoadSuccess) {
             return SafeArea(
               child: Container(

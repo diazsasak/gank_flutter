@@ -17,20 +17,18 @@ class LoginForm extends StatelessWidget {
             );
         }
       },
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/logo.png',
-                height: 120,
-              ),
-              const SizedBox(height: 8.0),
-              _GoogleLoginButton(),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/logo.png',
+            height: 120,
           ),
-        ),
+          const SizedBox(height: 8.0),
+          _GoogleLoginButton(),
+        ],
       ),
     );
   }

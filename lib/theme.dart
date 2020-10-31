@@ -5,6 +5,7 @@ final mainColor = const Color(0xFF1D2129);
 final theme = ThemeData(
   appBarTheme: AppBarTheme(
       color: mainColor,
+      iconTheme: IconThemeData(color: Colors.white),
       elevation: 0,
       centerTitle: true,
       textTheme: TextTheme(

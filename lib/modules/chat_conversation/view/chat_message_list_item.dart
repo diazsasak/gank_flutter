@@ -11,7 +11,13 @@ class ChatMessageListItem extends StatelessWidget {
     return Card(
       child: Container(
         padding: EdgeInsets.all(8.0),
-        child: Text(message.message),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(message.userId),
+            Text(message.message),
+          ],
+        ),
       ),
     );
   }

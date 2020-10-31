@@ -10,8 +10,8 @@ part 'chat_list_event.dart';
 part 'chat_list_state.dart';
 
 class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
-  AgoraRtmClient _client;
-  AgoraRtmChannel _channel;
+  AgoraRtmClient client;
+  AgoraRtmChannel channel;
   String userId;
 
   ChatListBloc(this.userId) : super(ChatInitial());
@@ -23,10 +23,12 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
     if (event is ChatMemberStarted) {
       await createClient();
       await login();
-      _channel = await createChannel('gank');
+      channel = await createChannel('gank');
       await joinChannel();
+      await onChannelEvent();
       try {
         List<AgoraRtmMember> members = await getMembers();
+        members.removeWhere((element) => element.userId == userId);
         yield ChatMemberLoadSuccess(members: members);
       } on Exception catch (e) {
         yield ChatMemberLoadFailure(e.toString());
@@ -34,6 +36,7 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
     } else if (event is ChatMemberChanged) {
       try {
         List<AgoraRtmMember> members = await getMembers();
+        members.removeWhere((element) => element.userId == userId);
         yield ChatMemberLoadSuccess(members: members);
       } on Exception catch (e) {
         yield ChatMemberLoadFailure(e.toString());
@@ -41,47 +44,21 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
     }
   }
 
-  Future<AgoraRtmChannel> createChannel(String name) async {
-    AgoraRtmChannel channel = await _client.createChannel(name);
-    print('channel created: ${channel.channelId}');
+  onChannelEvent() {
     channel.onMemberJoined = (AgoraRtmMember member) {
       print(
           "Member joined: " + member.userId + ', channel: ' + member.channelId);
-      mapEventToState(ChatMemberChanged());
+      add(ChatMemberChanged());
     };
     channel.onMemberLeft = (AgoraRtmMember member) {
       print("Member left: " + member.userId + ', channel: ' + member.channelId);
-      mapEventToState(ChatMemberChanged());
-    };
-    channel.onMessageReceived =
-        (AgoraRtmMessage message, AgoraRtmMember member) {
-      print("Channel msg: " + member.userId + ", msg: " + message.text);
-    };
-    return channel;
-  }
-
-  Future<void> createClient() async {
-    print('create client');
-    _client =
-        await AgoraRtmClient.createInstance('10be0f706220404296699b9458e87b6b');
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      print("Peer msg: " + peerId + ", msg: " + message.text);
-    };
-    _client.onConnectionStateChanged = (int state, int reason) {
-      print('Connection state changed: ' +
-          state.toString() +
-          ', reason: ' +
-          reason.toString());
-      if (state == 5) {
-        _client.logout();
-        print('Logout.');
-      }
+      add(ChatMemberChanged());
     };
   }
 
   Future<List<AgoraRtmMember>> getMembers() async {
     try {
-      List<AgoraRtmMember> members = await _channel.getMembers();
+      List<AgoraRtmMember> members = await channel.getMembers();
       print('Members: ' + members.toString());
       return members;
     } catch (errorCode) {
@@ -90,10 +67,39 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
     }
   }
 
+  Future<void> createClient() async {
+    print('create client');
+    client =
+        await AgoraRtmClient.createInstance('10be0f706220404296699b9458e87b6b');
+    client.onMessageReceived = (AgoraRtmMessage message, String peerId) {
+      print("Peer msg: " + peerId + ", msg: " + message.text);
+    };
+    client.onConnectionStateChanged = (int state, int reason) {
+      print('Connection state changed: ' +
+          state.toString() +
+          ', reason: ' +
+          reason.toString());
+      if (state == 5) {
+        client.logout();
+        print('Logout.');
+      }
+    };
+  }
+
+  Future<AgoraRtmChannel> createChannel(String name) async {
+    AgoraRtmChannel channel = await client.createChannel(name);
+    print('channel created: ${channel.channelId}');
+    channel.onMessageReceived =
+        (AgoraRtmMessage message, AgoraRtmMember member) {
+      print("Channel msg: " + member.userId + ", msg: " + message.text);
+    };
+    return channel;
+  }
+
   Future<void> joinChannel() async {
-    print('Joining channel: ${_channel.channelId}.');
+    print('Joining channel: ${channel.channelId}.');
     try {
-      await _channel.join();
+      await channel.join();
       print('Join channel success.');
     } catch (errorCode) {
       print('Join channel error: ' + errorCode.toString());
@@ -103,7 +109,7 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   Future<void> login() async {
     print('try login, user id: $userId');
     try {
-      await _client.login(null, userId);
+      await client.login(null, userId);
       print('Login success: ' + userId);
     } catch (errorCode) {
       print('Login error: ' + errorCode.toString());

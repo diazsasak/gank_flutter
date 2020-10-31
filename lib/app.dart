@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gank_flutter/blocs/authentication/authentication_bloc.dart';
+import 'package:gank_flutter/blocs/bottom_navigation/bottom_navigation.dart';
 import 'package:gank_flutter/modules/home/view/home_page.dart';
 import 'package:gank_flutter/modules/login/view/login_page.dart';
 import 'package:gank_flutter/modules/splash/view/splash_page.dart';
@@ -23,9 +24,19 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AuthenticationBloc(
-            authenticationRepository: authenticationRepository),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<BottomNavigationBloc>(
+            lazy: false,
+            create: (BuildContext context) =>
+                BottomNavigationBloc()..add(NavStarted()),
+          ),
+          BlocProvider<AuthenticationBloc>(
+            lazy: false,
+            create: (BuildContext context) => AuthenticationBloc(
+                authenticationRepository: authenticationRepository),
+          ),
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: theme,

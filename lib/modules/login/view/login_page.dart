@@ -51,8 +51,9 @@ class _LoginPageState extends State<LoginPage> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
               child: BlocProvider(
                 create: (_) => LoginCubit(
                   context.repository<AuthenticationRepository>(),
