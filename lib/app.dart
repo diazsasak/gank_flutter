@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gank_flutter/blocs/authentication/authentication_bloc.dart';
@@ -39,31 +40,31 @@ class _AppState extends State<App> {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          locale: DevicePreview.of(context).locale,
+          builder: DevicePreview.appBuilder,
           theme: theme,
           navigatorKey: _navigatorKey,
-          builder: (context, child) {
-            return BlocListener<AuthenticationBloc, AuthenticationState>(
-              listener: (context, state) {
-                switch (state.status) {
-                  case AuthenticationStatus.authenticated:
-                    _navigator.pushAndRemoveUntil<void>(
-                      HomePage.route(),
-                      (route) => false,
-                    );
-                    break;
-                  case AuthenticationStatus.unauthenticated:
-                    _navigator.pushAndRemoveUntil<void>(
-                      LoginPage.route(),
-                      (route) => false,
-                    );
-                    break;
-                  default:
-                    break;
-                }
-              },
-              child: child,
-            );
-          },
+          home: BlocListener<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+              switch (state.status) {
+                case AuthenticationStatus.authenticated:
+                  _navigator.pushAndRemoveUntil<void>(
+                    HomePage.route(),
+                        (route) => false,
+                  );
+                  break;
+                case AuthenticationStatus.unauthenticated:
+                  _navigator.pushAndRemoveUntil<void>(
+                    LoginPage.route(),
+                        (route) => false,
+                  );
+                  break;
+                default:
+                  break;
+              }
+            },
+            child: SplashPage(),
+          ),
           onGenerateRoute: (_) => SplashPage.route(),
         ),
       ),
